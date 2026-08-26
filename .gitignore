@@ -1,0 +1,25 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Variáveis de ambiente / chaves
+.env
+
+# VS Code
+.vscode/
+
+# Resultados e imagens
+data/imagens/*
+!data/imagens/.gitkeep
+
+data/resultados/*
+!data/resultados/.gitkeep
+
+# Temporários
+*.log
+.DS_Store
+Thumbs.db
