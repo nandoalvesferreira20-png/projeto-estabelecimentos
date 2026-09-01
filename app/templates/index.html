@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Análise de Estabelecimentos
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/style.css"
+    >
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ======================================
+             CABEÇALHO
+        ======================================= -->
+
+        <header class="topbar">
+
+            <div class="topbar-titulo">
+
+                <h1>
+                    Análise de Estabelecimentos
+                </h1>
+
+                <p>
+                    Revisão das classificações realizadas pela IA
+                </p>
+
+            </div>
+
+
+            <!-- PESQUISA -->
+
+            <div class="busca">
+
+                <input
+                    type="text"
+                    id="campo-busca"
+                    placeholder="Buscar por ID da instalação..."
+                    autocomplete="off"
+                >
+
+                <button
+                    id="btn-buscar"
+                    class="btn primario"
+                    type="button"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <!-- CONTADOR -->
+
+            <div class="contador">
+
+                <strong id="posicao">
+                    0 / 0
+                </strong>
+
+            </div>
+
+        </header>
+
+
+        <!-- ======================================
+             FILTROS
+        ======================================= -->
+
+        <section class="filtros">
+
+            <span class="filtros-titulo">
+                Filtrar:
+            </span>
+
+            <button
+                class="filtro-btn ativo-filtro"
+                data-filtro="TODOS"
+                type="button"
+            >
+                Todos
+            </button>
+
+            <button
+                class="filtro-btn"
+                data-filtro="ATIVO"
+                type="button"
+            >
+                Ativos
+            </button>
+
+            <button
+                class="filtro-btn"
+                data-filtro="POSSIVELMENTE_INATIVO"
+                type="button"
+            >
+                Possivelmente inativos
+            </button>
+
+            <button
+                class="filtro-btn"
+                data-filtro="INCONCLUSIVO"
+                type="button"
+            >
+                Inconclusivos
+            </button>
+
+            <button
+                class="filtro-btn"
+                data-filtro="REVISAO"
+                type="button"
+            >
+                ⚠ Revisão necessária
+            </button>
+
+        </section>
+<section class="analise-individual">
+
+    <div class="analise-individual-header">
+
+        <div>
+            <h2>
+                Analisar nova imagem
+            </h2>
+
+            <p>
+                Selecione uma fachada para análise individual.
+                Este modo não salva o resultado no Excel.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="analise-individual-conteudo">
+
+        <div class="upload-area">
+
+            <input
+                type="file"
+                id="input-imagem"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+            <button
+                id="btn-analisar-imagem"
+                class="btn primario"
+                type="button"
+            >
+                Analisar com IA
+            </button>
+
+        </div>
+
+
+        <div
+            id="status-analise-individual"
+            class="status-analise-individual"
+        >
+        </div>
+
+
+        <div
+            id="resultado-individual"
+            class="resultado-individual"
+        >
+
+            <div class="preview-individual">
+
+                <img
+                    id="preview-imagem-individual"
+                    src=""
+                    alt="Pré-visualização da imagem"
+                >
+
+            </div>
+
+
+            <div class="dados-individual">
+
+                <span class="label">
+                    Classificação
+                </span>
+
+                <div
+                    id="status-individual"
+                    class="status"
+                >
+                    -
+                </div>
+
+
+                <div class="confianca-area">
+
+                    <div class="confianca-header">
+
+                        <span>
+                            Confiança
+                        </span>
+
+                        <strong id="confianca-individual">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="barra">
+
+                        <div
+                            id="barra-confianca-individual"
+                            class="barra-preenchimento"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bloco">
+
+                    <span class="label">
+                        Motivo principal
+                    </span>
+
+                    <p id="motivo-individual">
+                        -
+                    </p>
+
+                </div>
+
+
+                <div class="bloco">
+
+                    <span class="label">
+                        Evidências
+                    </span>
+
+                    <ul id="evidencias-individual">
+                    </ul>
+
+                </div>
+
+
+                <div
+                    id="revisao-individual"
+                    class="revisao"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        <!-- ======================================
+             CONTEÚDO
+        ======================================= -->
+
+        <main class="conteudo">
+
+
+            <!-- ==================================
+                 FOTO
+            =================================== -->
+
+            <section class="painel imagem-container">
+
+                <div class="painel-titulo">
+                    Fachada
+                </div>
+
+                <div class="imagem-wrapper">
+
+                    <img
+                        id="imagem-fachada"
+                        src=""
+                        alt="Imagem da fachada"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 RESULTADO
+            =================================== -->
+
+            <section class="painel">
+
+                <div class="painel-titulo">
+                    Resultado da análise
+                </div>
+
+
+                <!-- INFORMAÇÕES -->
+
+                <div class="info-grid">
+
+                    <div class="info">
+
+                        <span>
+                            Instalação
+                        </span>
+
+                        <strong id="id-instalacao">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            Data da imagem
+                        </span>
+
+                        <strong id="data-imagem">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="status-area">
+
+                    <span class="label">
+                        Classificação da IA
+                    </span>
+
+                    <div
+                        id="status"
+                        class="status"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIANÇA -->
+
+                <div class="confianca-area">
+
+                    <div class="confianca-header">
+
+                        <span>
+                            Confiança
+                        </span>
+
+                        <strong id="confianca">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="barra">
+
+                        <div
+                            id="barra-confianca"
+                            class="barra-preenchimento"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MOTIVO -->
+
+                <div class="bloco">
+
+                    <span class="label">
+                        Motivo principal
+                    </span>
+
+                    <p id="motivo">
+                        -
+                    </p>
+
+                </div>
+
+
+                <!-- EVIDÊNCIAS -->
+
+                <div class="bloco">
+
+                    <span class="label">
+                        Evidências
+                    </span>
+
+                    <ul id="evidencias">
+                    </ul>
+
+                </div>
+
+
+                <!-- REVISÃO -->
+
+                <div
+                    id="revisao"
+                    class="revisao"
+                >
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- ======================================
+             NAVEGAÇÃO
+        ======================================= -->
+
+        <footer class="navegacao">
+
+            <button
+                id="btn-anterior"
+                class="btn secundario"
+                type="button"
+            >
+                ← Anterior
+            </button>
+
+
+            <div
+                id="contador-inferior"
+                class="contador-inferior"
+            >
+                0 de 0
+            </div>
+
+
+            <button
+                id="btn-proximo"
+                class="btn primario"
+                type="button"
+            >
+                Próximo →
+            </button>
+
+        </footer>
+
+    </div>
+
+
+    <script src="/static/js/app.js"></script>
+
+</body>
+
+</html>

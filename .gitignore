@@ -1,25 +1,80 @@
-# Ambiente virtual
-.venv/
-venv/
+# ==========================================
+# AMBIENTE VIRTUAL
+# ==========================================
 
-# Python
+.venv/
+.ven/
+venv/
+env/
+
+
+# ==========================================
+# VARIÁVEIS DE AMBIENTE / CHAVES
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+
+# ==========================================
+# PYTHON
+# ==========================================
+
 __pycache__/
 *.py[cod]
+*$py.class
 
-# Variáveis de ambiente / chaves
-.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# VS Code
+
+# ==========================================
+# VS CODE
+# ==========================================
+
 .vscode/
 
-# Resultados e imagens
-data/imagens/*
-!data/imagens/.gitkeep
 
-data/resultados/*
-!data/resultados/.gitkeep
+# ==========================================
+# IMAGENS COLETADAS
+# ==========================================
 
-# Temporários
+data/imagens/
+imagens.zip
+
+
+# ==========================================
+# RESULTADOS GERADOS
+# ==========================================
+
+data/resultados/
+
+
+# ==========================================
+# BASES / PLANILHAS LOCAIS
+# ==========================================
+
+base.xlsx
+base_google.xlsx
+base_normalizada_final.xlsx
+base_normalizada_oficial.xlsx
+base_normalizada_viacep.xlsx
+
+
+# ==========================================
+# ARQUIVOS TEMPORÁRIOS
+# ==========================================
+
+*.tmp
 *.log
+~$*.xlsx
+
+
+# ==========================================
+# SISTEMA OPERACIONAL
+# ==========================================
+
 .DS_Store
 Thumbs.db

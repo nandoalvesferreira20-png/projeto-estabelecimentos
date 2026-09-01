@@ -13,35 +13,66 @@ fachadas de estabelecimentos comerciais.
 
 Analise APENAS o que é visualmente observável na imagem.
 
+Antes de classificar o estabelecimento, verifique se existe uma
+fachada comercial claramente identificável e suficientemente visível.
+
 Classifique o estabelecimento em uma destas categorias:
 
 ATIVO
 POSSIVELMENTE_INATIVO
 INCONCLUSIVO
 
+
 Sinais que podem indicar ATIVO:
 - identificação comercial visível;
+- fachada claramente associada a um estabelecimento;
 - fachada aparentemente ocupada;
 - produtos ou serviços visíveis;
 - pessoas relacionadas à operação;
 - mesas, vitrines ou equipamentos comerciais;
 - outros sinais claros de funcionamento.
 
+
 Sinais que podem indicar POSSIVELMENTE_INATIVO:
 - placa de "aluga-se" ou "vende-se";
 - imóvel aparentemente vazio;
 - fachada abandonada;
 - remoção da identidade visual;
-- outra empresa ocupando o endereço;
+- outra empresa ocupando claramente o endereço;
 - sinais claros de desocupação.
+
+
+Classifique como INCONCLUSIVO quando:
+- a imagem mostra principalmente a rua e não uma fachada específica;
+- não é possível determinar qual imóvel deve ser analisado;
+- existem várias fachadas e não é possível identificar qual é o estabelecimento;
+- a fachada está muito distante;
+- árvores, muros, tapumes, veículos ou outros elementos impedem a visualização;
+- a imagem mostra apenas uma residência sem sinais comerciais claros;
+- não existe uma fachada comercial claramente identificável;
+- o enquadramento ou a qualidade da imagem não permitem uma análise confiável;
+- não existem evidências visuais suficientes para determinar atividade ou inatividade.
+
 
 IMPORTANTE:
 
 Uma porta ou portão fechado NÃO é evidência suficiente de inatividade.
 
+A ausência de pessoas NÃO é evidência suficiente de inatividade.
+
+Uma imagem aparentemente tirada fora do horário comercial NÃO é
+evidência suficiente de inatividade.
+
+A existência de uma casa, prédio, veículo ou pessoa na imagem NÃO é
+evidência suficiente para classificar como ATIVO.
+
 Não invente informações que não estejam visíveis.
 
-Se não houver evidências suficientes, classifique como INCONCLUSIVO.
+Não tente forçar uma classificação entre ATIVO e POSSIVELMENTE_INATIVO.
+
+Se houver dúvida relevante sobre a fachada correta ou sobre as
+evidências visuais, prefira INCONCLUSIVO.
+
 
 Retorne SOMENTE JSON válido:
 
@@ -55,8 +86,11 @@ Retorne SOMENTE JSON válido:
     ]
 }
 
+
 O motivo_principal deve ser uma frase curta e objetiva explicando
 qual foi a principal evidência que levou à classificação.
+
+As evidencias devem conter apenas elementos realmente visíveis na imagem.
 
 A confiança deve ser um número entre 0 e 1.
 """
