@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Normalização de Endereços
+    </title>
+
+    <link
+    rel="stylesheet"
+    href="/static/css/base.css"
+>
+
+<link
+    rel="stylesheet"
+    href="/static/css/normalizacao.css"
+>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <header class="topbar">
+
+            <div class="topbar-titulo">
+
+                <a
+                    href="/"
+                    class="voltar-link"
+                >
+                    ← Voltar
+                </a>
+
+                <h1>
+                    Normalização de endereços
+                </h1>
+
+                <p>
+                    Escolha o método de normalização desejado
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <main class="pagina-conteudo">
+
+            <section class="normalizacao-section pagina-section">
+
+                <div class="normalizacao-grid">
+
+
+                    <!-- =================================
+                         VIACEP
+                    ================================== -->
+
+                    <div class="normalizacao-card">
+
+                        <div class="normalizacao-card-topo">
+
+                            <div class="normalizacao-icone">
+                                CEP
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    ViaCEP
+                                </h3>
+
+                                <p>
+                                    Utiliza o CEP informado na
+                                    planilha para montar um endereço
+                                    padronizado.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="arquivo-area">
+
+                            <label
+                                for="arquivo-viacep"
+                                class="arquivo-label"
+                            >
+                                Selecionar arquivo Excel
+                            </label>
+
+                            <input
+                                type="file"
+                                id="arquivo-viacep"
+                                accept=".xlsx"
+                                hidden
+                            >
+
+                            <div
+                                id="nome-arquivo-viacep"
+                                class="arquivo-nome"
+                            >
+                                Nenhum arquivo selecionado
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            id="btn-viacep"
+                            class="btn primario normalizacao-btn"
+                            disabled
+                        >
+                            Normalizar via ViaCEP
+                        </button>
+
+
+                        <div
+                            id="status-viacep"
+                            class="normalizacao-status"
+                        >
+                        </div>
+
+
+                        <div
+                            id="resultado-viacep"
+                            class="normalizacao-resultado"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         GOOGLE / PLAYWRIGHT
+                    ================================== -->
+
+                    <div class="normalizacao-card">
+
+                        <div class="normalizacao-card-topo">
+
+                            <div class="normalizacao-icone">
+                                G
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Google Maps
+                                </h3>
+
+                                <p>
+                                    Usa Google Maps e Playwright
+                                    para localizar e padronizar
+                                    o endereço.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="arquivo-area">
+
+                            <label
+                                for="arquivo-google"
+                                class="arquivo-label"
+                            >
+                                Selecionar arquivo Excel
+                            </label>
+
+                            <input
+                                type="file"
+                                id="arquivo-google"
+                                accept=".xlsx"
+                                hidden
+                            >
+
+                            <div
+                                id="nome-arquivo-google"
+                                class="arquivo-nome"
+                            >
+                                Nenhum arquivo selecionado
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            id="btn-google"
+                            class="btn primario normalizacao-btn"
+                            disabled
+                        >
+                            Normalizar via Google
+                        </button>
+
+
+                        <div
+                            id="status-google"
+                            class="normalizacao-status"
+                        >
+                        </div>
+
+
+                        <div
+                            id="resultado-google"
+                            class="normalizacao-resultado"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script
+        src="/static/js/normalizacao.js"
+    ></script>
+
+</body>
+
+</html>

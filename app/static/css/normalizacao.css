@@ -1,0 +1,268 @@
+/* ==========================================
+   NORMALIZAÇÃO
+========================================== */
+
+.normalizacao-section {
+    width: 100%;
+
+    max-width: 1100px;
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.normalizacao-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.normalizacao-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================
+   TOPO DO CARD
+========================================== */
+
+.normalizacao-card-topo {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.normalizacao-card-topo h3 {
+    font-size: 18px;
+
+    margin-bottom: 6px;
+}
+
+.normalizacao-card-topo p {
+    color: #6b7280;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   ÍCONE
+========================================== */
+
+.normalizacao-icone {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   ARQUIVO
+========================================== */
+
+.arquivo-area {
+    margin-bottom: 18px;
+}
+
+.arquivo-label {
+    display: inline-block;
+
+    padding: 11px 15px;
+
+    background: #f3f4f6;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.arquivo-label:hover {
+    background: #e5e7eb;
+}
+
+.arquivo-nome {
+    min-height: 18px;
+
+    margin-top: 10px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    word-break: break-all;
+}
+
+
+/* ==========================================
+   BOTÃO
+========================================== */
+
+.normalizacao-btn {
+    width: 100%;
+}
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.normalizacao-status {
+    margin-top: 16px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.normalizacao-status.processando {
+    color: #2563eb;
+}
+
+.normalizacao-status.sucesso {
+    color: #166534;
+}
+
+.normalizacao-status.erro {
+    color: #991b1b;
+}
+
+
+/* ==========================================
+   RESULTADO
+========================================== */
+
+.normalizacao-resultado {
+    margin-top: 16px;
+}
+
+.resultado-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.resultado-grid > div {
+    background: #f9fafb;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 8px;
+
+    padding: 12px;
+}
+
+.resultado-grid span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+.resultado-grid strong {
+    font-size: 17px;
+}
+
+
+/* ==========================================
+   ARQUIVO GERADO
+========================================== */
+
+.arquivo-gerado {
+    margin-top: 12px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 8px;
+
+    padding: 12px;
+}
+
+.arquivo-gerado span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+.arquivo-gerado strong {
+    color: #166534;
+
+    font-size: 13px;
+
+    word-break: break-all;
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 800px) {
+
+    .normalizacao-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resultado-grid {
+        grid-template-columns: 1fr;
+    }
+}

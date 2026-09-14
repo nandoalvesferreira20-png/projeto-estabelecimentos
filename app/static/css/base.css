@@ -1,0 +1,154 @@
+/* ==========================================
+   RESET
+========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ==========================================
+   BODY
+========================================== */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #f4f6f8;
+
+    color: #1f2937;
+}
+
+
+/* ==========================================
+   APP
+========================================== */
+
+.app {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ==========================================
+   TOPBAR
+========================================== */
+
+.topbar {
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    padding: 22px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar h1 {
+    font-size: 24px;
+
+    margin-bottom: 5px;
+}
+
+.topbar p {
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   CONTEÚDO DE PÁGINA
+========================================== */
+
+.pagina-conteudo {
+    flex: 1;
+
+    padding: 30px 40px;
+}
+
+
+/* ==========================================
+   VOLTAR
+========================================== */
+
+.voltar-link {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: #2563eb;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.voltar-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   BOTÕES
+========================================== */
+
+.btn {
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+
+    cursor: not-allowed;
+}
+
+.btn.primario {
+    background: #2563eb;
+
+    color: #ffffff;
+}
+
+.btn.primario:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.btn.secundario {
+    background: #e5e7eb;
+
+    color: #111827;
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 900px) {
+
+    .topbar {
+        padding: 20px;
+    }
+
+    .pagina-conteudo {
+        padding: 20px;
+    }
+}

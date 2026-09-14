@@ -17,7 +17,7 @@ async function carregarResultados() {
     try {
 
         const resposta = await fetch(
-            "/resultados"
+            "api/resultados"
         );
 
         if (!resposta.ok) {
@@ -1056,6 +1056,405 @@ function mostrarResultadoIndividual(
     ).classList.add(
         "visivel"
     );
+}
+// ==========================================
+// NORMALIZAÇÃO DE ENDEREÇOS
+// ==========================================
+
+
+// ==========================================
+// ELEMENTOS - VIACEP
+// ==========================================
+
+const arquivoViaCep =
+    document.getElementById(
+        "arquivo-viacep"
+    );
+
+const nomeArquivoViaCep =
+    document.getElementById(
+        "nome-arquivo-viacep"
+    );
+
+const btnViaCep =
+    document.getElementById(
+        "btn-viacep"
+    );
+
+const statusViaCep =
+    document.getElementById(
+        "status-viacep"
+    );
+
+const resultadoViaCep =
+    document.getElementById(
+        "resultado-viacep"
+    );
+
+
+// ==========================================
+// ELEMENTOS - GOOGLE
+// ==========================================
+
+const arquivoGoogle =
+    document.getElementById(
+        "arquivo-google"
+    );
+
+const nomeArquivoGoogle =
+    document.getElementById(
+        "nome-arquivo-google"
+    );
+
+const btnGoogle =
+    document.getElementById(
+        "btn-google"
+    );
+
+const statusGoogle =
+    document.getElementById(
+        "status-google"
+    );
+
+const resultadoGoogle =
+    document.getElementById(
+        "resultado-google"
+    );
+
+
+// ==========================================
+// SELEÇÃO - VIACEP
+// ==========================================
+
+arquivoViaCep.addEventListener(
+    "change",
+    () => {
+
+        const arquivo =
+            arquivoViaCep.files[0];
+
+        if (!arquivo) {
+
+            nomeArquivoViaCep.textContent =
+                "Nenhum arquivo selecionado";
+
+            btnViaCep.disabled = true;
+
+            return;
+        }
+
+        nomeArquivoViaCep.textContent =
+            arquivo.name;
+
+        btnViaCep.disabled = false;
+
+        statusViaCep.textContent = "";
+
+        resultadoViaCep.innerHTML = "";
+    }
+);
+
+
+// ==========================================
+// SELEÇÃO - GOOGLE
+// ==========================================
+
+arquivoGoogle.addEventListener(
+    "change",
+    () => {
+
+        const arquivo =
+            arquivoGoogle.files[0];
+
+        if (!arquivo) {
+
+            nomeArquivoGoogle.textContent =
+                "Nenhum arquivo selecionado";
+
+            btnGoogle.disabled = true;
+
+            return;
+        }
+
+        nomeArquivoGoogle.textContent =
+            arquivo.name;
+
+        btnGoogle.disabled = false;
+
+        statusGoogle.textContent = "";
+
+        resultadoGoogle.innerHTML = "";
+    }
+);
+
+
+// ==========================================
+// EXECUTAR VIACEP
+// ==========================================
+
+btnViaCep.addEventListener(
+    "click",
+    async () => {
+
+        const arquivo =
+            arquivoViaCep.files[0];
+
+        if (!arquivo) {
+            return;
+        }
+
+        const formulario =
+            new FormData();
+
+        formulario.append(
+            "arquivo",
+            arquivo
+        );
+
+
+        btnViaCep.disabled = true;
+
+        btnViaCep.textContent =
+            "Processando...";
+
+        statusViaCep.className =
+            "normalizacao-status processando";
+
+        statusViaCep.textContent =
+            "Normalizando endereços via ViaCEP...";
+
+        resultadoViaCep.innerHTML = "";
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    "/normalizar/viacep",
+                    {
+                        method: "POST",
+                        body: formulario
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    dados.detail ||
+                    "Erro na normalização."
+                );
+            }
+
+
+            statusViaCep.className =
+                "normalizacao-status sucesso";
+
+            statusViaCep.textContent =
+                "✓ Normalização concluída";
+
+
+            resultadoViaCep.innerHTML = `
+                <div class="resultado-grid">
+
+                    <div>
+                        <span>Processadas</span>
+                        <strong>${dados.processadas}</strong>
+                    </div>
+
+                    <div>
+                        <span>Normalizadas</span>
+                        <strong>${dados.normalizadas}</strong>
+                    </div>
+
+                    <div>
+                        <span>CEP não encontrado</span>
+                        <strong>${dados.cep_nao_encontrado}</strong>
+                    </div>
+
+                    <div>
+                        <span>Erros</span>
+                        <strong>${dados.erros}</strong>
+                    </div>
+
+                </div>
+
+                <div class="arquivo-gerado">
+                    <span>Arquivo gerado</span>
+                    <strong>
+                        ${extrairNomeArquivo(
+                            dados.arquivo_saida
+                        )}
+                    </strong>
+                </div>
+            `;
+
+
+        } catch (erro) {
+
+            statusViaCep.className =
+                "normalizacao-status erro";
+
+            statusViaCep.textContent =
+                `✗ ${erro.message}`;
+
+        } finally {
+
+            btnViaCep.disabled = false;
+
+            btnViaCep.textContent =
+                "Normalizar via ViaCEP";
+        }
+    }
+);
+
+
+// ==========================================
+// EXECUTAR GOOGLE
+// ==========================================
+
+btnGoogle.addEventListener(
+    "click",
+    async () => {
+
+        const arquivo =
+            arquivoGoogle.files[0];
+
+        if (!arquivo) {
+            return;
+        }
+
+
+        const formulario =
+            new FormData();
+
+        formulario.append(
+            "arquivo",
+            arquivo
+        );
+
+
+        btnGoogle.disabled = true;
+
+        btnGoogle.textContent =
+            "Processando...";
+
+        statusGoogle.className =
+            "normalizacao-status processando";
+
+        statusGoogle.textContent =
+            "Abrindo Google Maps e normalizando...";
+
+        resultadoGoogle.innerHTML = "";
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    "/normalizar/google",
+                    {
+                        method: "POST",
+                        body: formulario
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    dados.detail ||
+                    "Erro na normalização."
+                );
+            }
+
+
+            statusGoogle.className =
+                "normalizacao-status sucesso";
+
+            statusGoogle.textContent =
+                "✓ Normalização concluída";
+
+
+            resultadoGoogle.innerHTML = `
+                <div class="resultado-grid">
+
+                    <div>
+                        <span>Processadas</span>
+                        <strong>${dados.processadas}</strong>
+                    </div>
+
+                    <div>
+                        <span>Normalizadas</span>
+                        <strong>${dados.normalizadas}</strong>
+                    </div>
+
+                    <div>
+                        <span>Não encontradas</span>
+                        <strong>${dados.nao_encontradas}</strong>
+                    </div>
+
+                    <div>
+                        <span>Erros</span>
+                        <strong>${dados.erros}</strong>
+                    </div>
+
+                </div>
+
+                <div class="arquivo-gerado">
+                    <span>Arquivo gerado</span>
+                    <strong>
+                        ${extrairNomeArquivo(
+                            dados.arquivo_saida
+                        )}
+                    </strong>
+                </div>
+            `;
+
+
+        } catch (erro) {
+
+            statusGoogle.className =
+                "normalizacao-status erro";
+
+            statusGoogle.textContent =
+                `✗ ${erro.message}`;
+
+        } finally {
+
+            btnGoogle.disabled = false;
+
+            btnGoogle.textContent =
+                "Normalizar via Google";
+        }
+    }
+);
+
+
+// ==========================================
+// PEGAR APENAS NOME DO ARQUIVO
+// ==========================================
+
+function extrairNomeArquivo(
+    caminho
+) {
+
+    if (!caminho) {
+        return "-";
+    }
+
+    return caminho
+        .replaceAll("\\", "/")
+        .split("/")
+        .pop();
 }
 
 carregarResultados();

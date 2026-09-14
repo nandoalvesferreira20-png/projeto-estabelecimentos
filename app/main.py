@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import (
@@ -6,12 +7,19 @@ from fastapi import (
     File,
     HTTPException,
 )
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 
 from app.models.result import ResultadoAnalise
 from app.services.classifier_service import analisar_fachada
 from app.services.interface_service import carregar_resultados
+from app.services.normalizacao_google_service import (
+    executar_normalizacao_google,
+)
+from app.services.normalizacao_viacep_service import (
+    executar_normalizacao_viacep,
+)
 
 
 app = FastAPI(
@@ -25,17 +33,16 @@ app = FastAPI(
 # CAMINHOS
 # ==========================================
 
-PASTA_IMAGENS = Path(
-    "data/imagens"
-)
+PASTA_IMAGENS = Path("data/imagens")
+PASTA_STATIC = Path("app/static")
+PASTA_UPLOADS = Path("data/uploads")
+PASTA_RESULTADOS = Path("data/resultados")
 
-PASTA_STATIC = Path(
-    "app/static"
-)
-
-ARQUIVO_INTERFACE = Path(
-    "app/templates/index.html"
-)
+TEMPLATE_HOME = Path("app/templates/index.html")
+TEMPLATE_NORMALIZACAO = Path("app/templates/normalizacao.html")
+TEMPLATE_COLETA = Path("app/templates/coleta.html")
+TEMPLATE_ANALISE = Path("app/templates/analise.html")
+TEMPLATE_RESULTADOS = Path("app/templates/resultados.html")
 
 
 # ==========================================
@@ -48,6 +55,16 @@ PASTA_IMAGENS.mkdir(
 )
 
 PASTA_STATIC.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+PASTA_UPLOADS.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+PASTA_RESULTADOS.mkdir(
     parents=True,
     exist_ok=True,
 )
@@ -65,7 +82,6 @@ app.mount(
     name="imagens",
 )
 
-
 app.mount(
     "/static",
     StaticFiles(
@@ -76,32 +92,77 @@ app.mount(
 
 
 # ==========================================
-# INTERFACE
+# FUNÇÃO AUXILIAR PARA PÁGINAS
+# ==========================================
+
+def abrir_pagina(
+    caminho: Path
+):
+
+    if not caminho.exists():
+
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"Página não encontrada: "
+                f"{caminho.name}"
+            ),
+        )
+
+    return FileResponse(
+        caminho
+    )
+
+
+# ==========================================
+# PÁGINAS
 # ==========================================
 
 @app.get("/")
 def home():
 
-    if not ARQUIVO_INTERFACE.exists():
+    return abrir_pagina(
+        TEMPLATE_HOME
+    )
 
-        raise HTTPException(
-            status_code=404,
-            detail=(
-                "Arquivo da interface "
-                "não encontrado."
-            ),
-        )
 
-    return FileResponse(
-        ARQUIVO_INTERFACE
+@app.get("/normalizacao")
+def pagina_normalizacao():
+
+    return abrir_pagina(
+        TEMPLATE_NORMALIZACAO
+    )
+
+
+@app.get("/coleta")
+def pagina_coleta():
+
+    return abrir_pagina(
+        TEMPLATE_COLETA
+    )
+
+
+@app.get("/analise")
+def pagina_analise():
+
+    return abrir_pagina(
+        TEMPLATE_ANALISE
+    )
+
+
+@app.get("/resultados")
+def pagina_resultados():
+
+    return abrir_pagina(
+        TEMPLATE_RESULTADOS
     )
 
 
 # ==========================================
-# RESULTADOS PARA A INTERFACE
+# API - RESULTADOS
 # ==========================================
 
-@app.get("/resultados")
+@app.get("/api/resultados")
 def listar_resultados():
 
     resultados = carregar_resultados()
@@ -113,16 +174,223 @@ def listar_resultados():
 
 
 # ==========================================
-# ANÁLISE INDIVIDUAL DE FACHADA
-#
-# Esta rota:
-#
-# - recebe uma imagem
-# - envia para a IA
-# - devolve o resultado
-#
-# NÃO salva no Excel
-# NÃO altera o processamento em lote
+# API - NORMALIZAÇÃO GOOGLE
+# ==========================================
+
+@app.post("/normalizar/google")
+async def normalizar_google(
+    arquivo: UploadFile = File(...)
+):
+
+    if not arquivo.filename:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo não informado.",
+        )
+
+    extensao = (
+        Path(
+            arquivo.filename
+        )
+        .suffix
+        .lower()
+    )
+
+    if extensao != ".xlsx":
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Selecione um arquivo "
+                "Excel no formato .xlsx."
+            ),
+        )
+
+    conteudo = await arquivo.read()
+
+    if not conteudo:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo vazio.",
+        )
+
+    timestamp = (
+        datetime.now()
+        .strftime(
+            "%Y%m%d_%H%M%S"
+        )
+    )
+
+    nome_original = (
+        Path(
+            arquivo.filename
+        ).stem
+    )
+
+    arquivo_entrada = (
+        PASTA_UPLOADS
+        /
+        (
+            f"{nome_original}_"
+            f"{timestamp}.xlsx"
+        )
+    )
+
+    arquivo_saida = (
+        PASTA_RESULTADOS
+        /
+        (
+            f"{nome_original}_"
+            f"normalizada_google_"
+            f"{timestamp}.xlsx"
+        )
+    )
+
+    arquivo_entrada.write_bytes(
+        conteudo
+    )
+
+    try:
+
+        resultado = await run_in_threadpool(
+            executar_normalizacao_google,
+            arquivo_entrada,
+            arquivo_saida,
+            None,
+        )
+
+    except Exception as erro:
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Erro durante a "
+                "normalização Google: "
+                f"{erro}"
+            ),
+        )
+
+    return {
+        "sucesso": True,
+        "metodo": "GOOGLE_PLAYWRIGHT",
+        "arquivo_original":
+            arquivo.filename,
+        **resultado,
+    }
+
+
+# ==========================================
+# API - NORMALIZAÇÃO VIACEP
+# ==========================================
+
+@app.post("/normalizar/viacep")
+async def normalizar_viacep(
+    arquivo: UploadFile = File(...)
+):
+
+    if not arquivo.filename:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo não informado.",
+        )
+
+    extensao = (
+        Path(
+            arquivo.filename
+        )
+        .suffix
+        .lower()
+    )
+
+    if extensao != ".xlsx":
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Selecione um arquivo "
+                "Excel no formato .xlsx."
+            ),
+        )
+
+    conteudo = await arquivo.read()
+
+    if not conteudo:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo vazio.",
+        )
+
+    timestamp = (
+        datetime.now()
+        .strftime(
+            "%Y%m%d_%H%M%S"
+        )
+    )
+
+    nome_original = (
+        Path(
+            arquivo.filename
+        ).stem
+    )
+
+    arquivo_entrada = (
+        PASTA_UPLOADS
+        /
+        (
+            f"{nome_original}_"
+            f"{timestamp}.xlsx"
+        )
+    )
+
+    arquivo_saida = (
+        PASTA_RESULTADOS
+        /
+        (
+            f"{nome_original}_"
+            f"normalizada_viacep_"
+            f"{timestamp}.xlsx"
+        )
+    )
+
+    arquivo_entrada.write_bytes(
+        conteudo
+    )
+
+    try:
+
+        resultado = await run_in_threadpool(
+            executar_normalizacao_viacep,
+            arquivo_entrada,
+            arquivo_saida,
+            None,
+        )
+
+    except Exception as erro:
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Erro durante a "
+                "normalização ViaCEP: "
+                f"{erro}"
+            ),
+        )
+
+    return {
+        "sucesso": True,
+        "metodo": "VIACEP",
+        "arquivo_original":
+            arquivo.filename,
+        **resultado,
+    }
+
+
+# ==========================================
+# API - ANÁLISE INDIVIDUAL
 # ==========================================
 
 @app.post(
@@ -139,10 +407,6 @@ async def analisar(
         "image/webp",
     ]
 
-    # ======================================
-    # VALIDA TIPO DO ARQUIVO
-    # ======================================
-
     if (
         imagem.content_type
         not in tipos_permitidos
@@ -156,11 +420,6 @@ async def analisar(
             ),
         )
 
-
-    # ======================================
-    # VALIDA NOME DO ARQUIVO
-    # ======================================
-
     if not imagem.filename:
 
         raise HTTPException(
@@ -171,13 +430,7 @@ async def analisar(
             ),
         )
 
-
-    # ======================================
-    # LÊ IMAGEM
-    # ======================================
-
     imagem_bytes = await imagem.read()
-
 
     if not imagem_bytes:
 
@@ -186,15 +439,11 @@ async def analisar(
             detail="Imagem vazia.",
         )
 
-
-    # ======================================
-    # EXECUTA IA
-    # ======================================
-
     try:
 
-        resultado = analisar_fachada(
-            imagem_bytes
+        resultado = await run_in_threadpool(
+            analisar_fachada,
+            imagem_bytes,
         )
 
     except Exception as erro:
@@ -206,12 +455,5 @@ async def analisar(
                 f"a imagem: {erro}"
             ),
         )
-
-
-    # ======================================
-    # DEVOLVE RESULTADO
-    #
-    # Não salva em resultados.xlsx
-    # ======================================
 
     return resultado

@@ -8,7 +8,7 @@ import requests
 ARQUIVO_ENTRADA = Path("base.xlsx")
 ARQUIVO_SAIDA = Path("base_normalizada_viacep.xlsx")
 
-LIMITE_TESTE = 1500
+LIMITE_TESTE = 1800
 
 
 def consultar_viacep(cep: str) -> dict | None:
