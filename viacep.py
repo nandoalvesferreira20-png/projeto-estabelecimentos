@@ -6,7 +6,7 @@ import requests
 
 
 ARQUIVO_ENTRADA = Path("base.xlsx")
-ARQUIVO_SAIDA = Path("base_normalizada_viacep.xlsx")
+ARQUIVO_SAIDA = Path("base_normalizada_viacep2.xlsx")
 
 LIMITE_TESTE = 1800
 

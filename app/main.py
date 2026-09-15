@@ -20,7 +20,12 @@ from app.services.normalizacao_google_service import (
 from app.services.normalizacao_viacep_service import (
     executar_normalizacao_viacep,
 )
-
+from app.services.coleta_google_service import (
+    executar_coleta_google,
+)
+from app.services.analise_lote_service import (
+    executar_analise_lote,
+)
 
 app = FastAPI(
     title="API de Análise de Estabelecimentos",
@@ -388,6 +393,175 @@ async def normalizar_viacep(
         **resultado,
     }
 
+# ==========================================
+# API - COLETA DE IMAGENS
+# ==========================================
+
+@app.post("/coletar/imagens")
+async def coletar_imagens(
+    arquivo: UploadFile = File(...)
+):
+
+    # ======================================
+    # VALIDA ARQUIVO
+    # ======================================
+
+    if not arquivo.filename:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo não informado.",
+        )
+
+    extensao = (
+        Path(
+            arquivo.filename
+        )
+        .suffix
+        .lower()
+    )
+
+    if extensao != ".xlsx":
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Selecione um arquivo "
+                "Excel no formato .xlsx."
+            ),
+        )
+
+    # ======================================
+    # LÊ ARQUIVO
+    # ======================================
+
+    conteudo = await arquivo.read()
+
+    if not conteudo:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo vazio.",
+        )
+
+    # ======================================
+    # CRIA NOME TEMPORÁRIO
+    # ======================================
+
+    timestamp = (
+        datetime.now()
+        .strftime(
+            "%Y%m%d_%H%M%S"
+        )
+    )
+
+    nome_original = (
+        Path(
+            arquivo.filename
+        ).stem
+    )
+
+    arquivo_entrada = (
+        PASTA_UPLOADS
+        /
+        (
+            f"{nome_original}_"
+            f"coleta_"
+            f"{timestamp}.xlsx"
+        )
+    )
+
+    arquivo_entrada.write_bytes(
+        conteudo
+    )
+
+    # ======================================
+    # EXECUTA COLETA
+    # ======================================
+
+    try:
+
+        resultado = await run_in_threadpool(
+            executar_coleta_google,
+            arquivo_entrada,
+            PASTA_IMAGENS,
+            PASTA_RESULTADOS / "coleta.csv",
+            None,
+            None,
+        )
+
+    except ValueError as erro:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(erro),
+        )
+
+    except Exception as erro:
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Erro durante a coleta "
+                "de imagens: "
+                f"{erro}"
+            ),
+        )
+
+    # ======================================
+    # RESPOSTA
+    # ======================================
+
+    return {
+        "sucesso": True,
+        "arquivo_original":
+            arquivo.filename,
+        **resultado,
+    }
+# ==========================================
+# API - ANÁLISE EM LOTE
+# ==========================================
+
+@app.post("/analisar/lote")
+async def analisar_lote():
+
+    try:
+
+        resultado = await run_in_threadpool(
+            executar_analise_lote,
+            PASTA_IMAGENS,
+            None,
+            None,
+        )
+
+    except FileNotFoundError as erro:
+
+        raise HTTPException(
+            status_code=404,
+            detail=str(erro),
+        )
+
+    except ValueError as erro:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(erro),
+        )
+
+    except Exception as erro:
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Erro durante a análise "
+                f"em lote: {erro}"
+            ),
+        )
+
+    return {
+        "sucesso": True,
+        **resultado,
+    }
 
 # ==========================================
 # API - ANÁLISE INDIVIDUAL

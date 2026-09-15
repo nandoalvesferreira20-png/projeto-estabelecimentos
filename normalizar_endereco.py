@@ -139,7 +139,7 @@ def executar():
 
                 endereco_normalizado_existente = planilha.cell(
                     linha,
-                    5
+                    6
                 ).value
 
                 # -----------------------------

@@ -78,3 +78,8 @@ base_normalizada_viacep.xlsx
 
 .DS_Store
 Thumbs.db
+
+data/uploads
+data/Nova pasta
+data/backup
+base_normalizada.xlsx

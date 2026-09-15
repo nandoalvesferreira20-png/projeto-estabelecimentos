@@ -152,3 +152,337 @@ body {
         padding: 20px;
     }
 }
+/* ==========================================
+   IDENTIDADE ENEL
+========================================== */
+
+.marca-sistema {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.logo-enel {
+    width: 72px;
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+.marca-divisor {
+    width: 1px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    background: #e5e7eb;
+}
+
+.marca-sistema h1 {
+    margin: 0 0 5px;
+}
+
+.marca-sistema p {
+    margin: 0;
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 650px) {
+
+    .marca-sistema {
+        gap: 12px;
+    }
+
+    .logo-enel {
+        width: 55px;
+    }
+
+    .marca-divisor {
+        height: 34px;
+    }
+}
+/* ==========================================
+   HEADER HOME - ENEL
+========================================== */
+
+.topbar {
+    padding: 22px 58px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.topbar .marca-sistema {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+}
+
+
+.topbar .logo-enel {
+    width: 105px;
+    height: 64px;
+
+    flex-shrink: 0;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+.topbar .marca-divisor {
+    width: 1px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    background: #d1d5db;
+}
+
+
+.topbar .topbar-titulo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.topbar .topbar-titulo h1 {
+    margin: 0 0 4px;
+
+    color: #111827;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+.topbar .topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* ==========================================
+   DASHBOARD
+========================================== */
+
+.dashboard {
+    padding-top: 42px;
+}
+
+/* ==========================================
+   HEADER HOME
+========================================== */
+
+.topbar {
+    min-height: 120px;
+    padding: 20px 58px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.topbar .marca-sistema {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 26px;
+}
+
+
+/* ==========================================
+   LOGO ENEL
+========================================== */
+
+.topbar .logo-enel-container {
+    position: relative;
+
+    width: 135px;
+    height: 80px;
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+
+.topbar .logo-enel {
+    position: absolute;
+
+    width: 185px;
+    max-width: none;
+    height: auto;
+
+    left: -25px;
+    top: -25px;
+}
+
+
+/* ==========================================
+   DIVISOR
+========================================== */
+
+.topbar .marca-divisor {
+    width: 1px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    background: #d1d5db;
+}
+
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.topbar .topbar-titulo {
+    text-align: left;
+}
+
+
+.topbar .topbar-titulo h1 {
+    margin: 0 0 5px;
+
+    color: #111827;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+.topbar .topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   HEADER FINAL
+========================================== */
+
+.topbar {
+    position: relative;
+
+    height: 150px;
+    padding: 0 58px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.topbar .marca-sistema {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* ==========================================
+   LOGO - ESQUERDA
+========================================== */
+
+.topbar .logo-enel-container {
+    position: relative;
+
+    width: 135px;
+    height: 80px;
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+
+.topbar .logo-enel {
+    position: absolute;
+
+    width: 185px;
+    max-width: none;
+    height: auto;
+
+    left: -25px;
+    top: -25px;
+}
+
+
+/* ==========================================
+   TÍTULO - CENTRO REAL DA TELA
+========================================== */
+
+.topbar .topbar-titulo {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: max-content;
+    max-width: 60%;
+
+    text-align: center;
+}
+
+
+.topbar .topbar-titulo h1 {
+    margin: 0 0 6px;
+
+    color: #111827;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+.topbar .topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* Não usamos mais o divisor */
+
+.topbar .marca-divisor {
+    display: none;
+}

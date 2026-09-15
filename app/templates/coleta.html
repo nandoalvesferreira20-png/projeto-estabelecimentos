@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Coleta de Imagens | Análise de Estabelecimentos
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/css/coleta.css"
+    >
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ======================================
+             HEADER
+        ======================================= -->
+
+       <header class="topbar">
+
+    <div class="marca-sistema">
+
+        <div class="logo-enel-container">
+            <img
+                src="/static/img/logo.png"
+                alt="Enel Brasil"
+                class="logo-enel"
+            >
+        </div>
+<a
+            href="/"
+            class="voltar"
+        >
+            ← Início
+        </a>
+        <div class="topbar-titulo">
+            <h1>
+                COLETA
+            </h1>
+
+            <p>
+                Coleta de Imagens
+            </p>
+            <P>
+                Coleta de fachadas utilizando Google Street View
+            </P>
+        </div>
+
+    </div>
+
+</header>
+
+        <!-- ======================================
+             CONTEÚDO
+        ======================================= -->
+
+        <main class="conteudo">
+
+            <!-- ==================================
+                 CONFIGURAÇÃO
+            =================================== -->
+
+            <section class="painel">
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            ETAPA 01
+                        </span>
+
+                        <h2>
+                            Planilha de entrada
+                        </h2>
+
+                        <p>
+                            Selecione a planilha normalizada
+                            contendo as instalações que serão
+                            utilizadas na coleta.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DROPZONE -->
+
+                <label
+                    for="arquivo"
+                    class="upload-area"
+                    id="upload-area"
+                >
+
+                    <div class="upload-icone">
+                        ↑
+                    </div>
+
+                    <div class="upload-texto">
+
+                        <strong>
+                            Selecionar planilha
+                        </strong>
+
+                        <span>
+                            Clique para escolher um arquivo
+                            Excel (.xlsx)
+                        </span>
+
+                    </div>
+
+                    <input
+                        type="file"
+                        id="arquivo"
+                        accept=".xlsx"
+                        hidden
+                    >
+
+                </label>
+
+
+                <!-- ARQUIVO SELECIONADO -->
+
+                <div
+                    class="arquivo-selecionado"
+                    id="arquivo-selecionado"
+                    hidden
+                >
+
+                    <div class="arquivo-icone">
+                        XLSX
+                    </div>
+
+                    <div class="arquivo-info">
+
+                        <strong id="nome-arquivo">
+                            -
+                        </strong>
+
+                        <span id="tamanho-arquivo">
+                            -
+                        </span>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="btn-remover"
+                        class="btn-remover"
+                        title="Remover arquivo"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- INFORMAÇÕES -->
+
+                <div class="requisitos">
+
+                    <strong>
+                        Estrutura esperada
+                    </strong>
+
+                    <div class="requisitos-grid">
+
+                        <span>
+                            INSTALACAO
+                        </span>
+
+                        <span>
+                            ENDERECO_NORMALIZADO
+                        </span>
+
+                        <span>
+                            LATITUDE
+                        </span>
+
+                        <span>
+                            LONGITUDE
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="button"
+                    id="btn-iniciar"
+                    class="btn-iniciar"
+                    disabled
+                >
+                    <span>
+                        ▶
+                    </span>
+
+                    Iniciar coleta
+                </button>
+
+            </section>
+
+
+            <!-- ==================================
+                 STATUS
+            =================================== -->
+
+            <section class="painel">
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            ETAPA 02
+                        </span>
+
+                        <h2>
+                            Processamento
+                        </h2>
+
+                        <p>
+                            Acompanhe o resultado da coleta
+                            das fachadas.
+                        </p>
+
+                    </div>
+
+                    <div
+                        id="status-badge"
+                        class="status-badge aguardando"
+                    >
+                        AGUARDANDO
+                    </div>
+
+                </div>
+
+
+                <!-- PROGRESSO -->
+
+                <div class="progresso-area">
+
+                    <div class="progresso-header">
+
+                        <span>
+                            Progresso
+                        </span>
+
+                        <strong id="progresso-percentual">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="barra-progresso">
+
+                        <div
+                            id="barra-preenchimento"
+                            class="barra-preenchimento"
+                        >
+                        </div>
+
+                    </div>
+
+                    <div class="progresso-detalhe">
+
+                        <span id="progresso-texto">
+                            Nenhuma coleta iniciada
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARDS -->
+
+                <div class="metricas">
+
+                    <div class="metrica">
+
+                        <span class="metrica-label">
+                            INSTALAÇÕES
+                        </span>
+
+                        <strong id="total">
+                            0
+                        </strong>
+
+                        <small>
+                            encontradas
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica sucesso">
+
+                        <span class="metrica-label">
+                            COLETADAS
+                        </span>
+
+                        <strong id="baixadas">
+                            0
+                        </strong>
+
+                        <small>
+                            imagens salvas
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica ignorado">
+
+                        <span class="metrica-label">
+                            EXISTENTES
+                        </span>
+
+                        <strong id="ignoradas">
+                            0
+                        </strong>
+
+                        <small>
+                            já coletadas
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica alerta">
+
+                        <span class="metrica-label">
+                            NÃO ENCONTRADAS
+                        </span>
+
+                        <strong id="nao-encontradas">
+                            0
+                        </strong>
+
+                        <small>
+                            sem Street View
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica erro">
+
+                        <span class="metrica-label">
+                            ERROS
+                        </span>
+
+                        <strong id="erros">
+                            0
+                        </strong>
+
+                        <small>
+                            falhas
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOG -->
+
+                <div class="log-area">
+
+                    <div class="log-header">
+
+                        <span>
+                            Atividade
+                        </span>
+
+                        <span
+                            id="indicador-execucao"
+                            class="indicador-execucao"
+                        >
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="log"
+                        class="log"
+                    >
+
+                        <div class="log-vazio">
+                            O histórico da coleta
+                            aparecerá aqui.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 RESULTADO FINAL
+            =================================== -->
+
+            <section
+                class="painel resultado-final"
+                id="resultado-final"
+                hidden
+            >
+
+                <div class="resultado-icone">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h2>
+                        Coleta finalizada
+                    </h2>
+
+                    <p id="resultado-mensagem">
+                        As imagens foram processadas
+                        com sucesso.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- ======================================
+             FOOTER
+        ======================================= -->
+
+        <footer class="footer">
+
+            <div>
+
+                <strong>
+                    Análise de Estabelecimentos
+                </strong>
+
+                <span>
+                    Sistema de apoio à análise
+                    automatizada de fachadas
+                </span>
+
+            </div>
+
+            <div class="desenvolvedor">
+
+                Developed by
+
+                <strong>
+                    Fernando Ferreira & Sidnei Diaz
+                </strong>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <script
+        src="/static/js/coleta.js"
+    ></script>
+
+</body>
+
+</html>

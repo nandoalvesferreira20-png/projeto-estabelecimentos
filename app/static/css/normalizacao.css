@@ -266,3 +266,32 @@
         grid-template-columns: 1fr;
     }
 }
+.topbar .voltar {
+    position: absolute;
+
+    top: 14px;
+    left: 58px;
+
+    padding: 0;
+
+    background: transparent;
+    border: none;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    z-index: 10;
+
+    transition:
+        color 0.2s,
+        transform 0.2s;
+}
+
+.topbar .voltar:hover {
+    color: #111827;
+    transform: translateX(-2px);
+}

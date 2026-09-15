@@ -158,3 +158,281 @@
         grid-template-columns: 1fr;
     }
 }
+/* ==========================================
+   HEADER ENEL - AJUSTE DO LOGO ORIGINAL
+========================================== */
+
+.topbar {
+    padding: 18px 58px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.marca-sistema {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+/* JANELA QUE "RECORTA" O PNG */
+
+.logo-enel-container {
+    width: 125px;
+    height: 72px;
+
+    position: relative;
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+
+/* PNG ORIGINAL AMPLIADO DENTRO DA JANELA */
+
+.logo-enel {
+    position: absolute;
+
+    width: 175px;
+    height: auto;
+
+    /*
+       Movemos o PNG para eliminar
+       visualmente as margens brancas.
+    */
+
+    left: -25px;
+    top: -24px;
+}
+
+
+/* DIVISOR */
+
+.marca-divisor {
+    width: 1px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    background: #d1d5db;
+}
+
+
+/* TEXTO */
+
+.topbar-titulo h1 {
+    margin: 0 0 4px;
+
+    color: #111827;
+
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+/* ==========================================
+   HEADER HOME
+========================================== */
+
+.topbar {
+    min-height: 120px;
+    padding: 20px 58px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.topbar .marca-sistema {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 26px;
+}
+
+
+/* ==========================================
+   LOGO ENEL
+========================================== */
+
+.topbar .logo-enel-container {
+    position: relative;
+
+    width: 135px;
+    height: 80px;
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+
+.topbar .logo-enel {
+    position: absolute;
+
+    width: 185px;
+    max-width: none;
+    height: auto;
+
+    left: -25px;
+    top: -25px;
+}
+
+
+/* ==========================================
+   DIVISOR
+========================================== */
+
+.topbar .marca-divisor {
+    width: 1px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    background: #d1d5db;
+}
+
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.topbar .topbar-titulo {
+    text-align: left;
+}
+
+
+.topbar .topbar-titulo h1 {
+    margin: 0 0 5px;
+
+    color: #111827;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+.topbar .topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+/* ==========================================
+   HEADER FINAL
+========================================== */
+
+.topbar {
+    position: relative;
+
+    height: 150px;
+    padding: 0 58px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.topbar .marca-sistema {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* ==========================================
+   LOGO - ESQUERDA
+========================================== */
+
+.topbar .logo-enel-container {
+    position: relative;
+
+    width: 135px;
+    height: 80px;
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+
+.topbar .logo-enel {
+    position: absolute;
+
+    width: 185px;
+    max-width: none;
+    height: auto;
+
+    left: -25px;
+    top: -25px;
+}
+
+
+/* ==========================================
+   TÍTULO - CENTRO REAL DA TELA
+========================================== */
+
+.topbar .topbar-titulo {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: max-content;
+    max-width: 60%;
+
+    text-align: center;
+}
+
+
+.topbar .topbar-titulo h1 {
+    margin: 0 0 6px;
+
+    color: #111827;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+.topbar .topbar-titulo p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* Não usamos mais o divisor */
+
+.topbar .marca-divisor {
+    display: none;
+}

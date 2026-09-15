@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Análise de Fachadas
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/css/analise.css"
+    >
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ======================================
+             HEADER
+        ======================================= -->
+
+     <header class="topbar">
+
+    <div class="marca-sistema">
+
+        <a
+            href="/"
+            class="voltar"
+        >
+            ← Início
+        </a>
+
+
+        <div class="logo-enel-container">
+
+            <img
+                src="/static/img/logo.png"
+                alt="Enel Brasil"
+                class="logo-enel"
+            >
+
+        </div>
+
+
+        <div class="topbar-titulo">
+
+            <h1>
+                Análise de Fachadas
+            </h1>
+
+            <p>
+                Classificação inteligente de estabelecimentos utilizando IA
+            </p>
+
+        </div>
+
+    </div>
+
+</header>
+
+        <!-- ======================================
+             CONTEÚDO
+        ======================================= -->
+
+        <main class="conteudo">
+
+
+            <!-- ==================================
+                 SELEÇÃO DO MODO
+            =================================== -->
+
+            <section class="painel">
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            ETAPA 3
+                        </span>
+
+                        <h2>
+                            Análise das fachadas
+                        </h2>
+
+                        <p>
+                            Escolha entre processar todas as imagens
+                            coletadas ou analisar uma imagem
+                            individual do computador.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modos-analise">
+
+
+                    <!-- ==========================
+                         LOTE
+                    =========================== -->
+
+                    <div class="modo-card lote">
+
+                        <div class="modo-icone">
+                            📁
+                        </div>
+
+                        <div class="modo-conteudo">
+
+                            <span class="modo-tipo">
+                                ANÁLISE EM LOTE
+                            </span>
+
+                            <h3>
+                                Processar imagens coletadas
+                            </h3>
+
+                            <p>
+                                Analisa automaticamente as imagens
+                                disponíveis na pasta padrão do
+                                projeto.
+                            </p>
+
+
+                            <div class="origem-imagens">
+
+                                <div class="origem-icone">
+                                    📂
+                                </div>
+
+                                <div class="origem-info">
+
+                                    <span>
+                                        Pasta utilizada
+                                    </span>
+
+                                    <strong>
+                                        data/imagens
+                                    </strong>
+
+                                    <small>
+                                        Imagens já processadas
+                                        serão ignoradas
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="btn-iniciar"
+                                class="btn-iniciar"
+                            >
+                                <span>
+                                    ▶
+                                </span>
+
+                                Iniciar análise em lote
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ==========================
+                         INDIVIDUAL
+                    =========================== -->
+
+                    <div class="modo-card individual">
+
+                        <div class="modo-icone">
+                            🖼
+                        </div>
+
+                        <div class="modo-conteudo">
+
+                            <span class="modo-tipo">
+                                ANÁLISE INDIVIDUAL
+                            </span>
+
+                            <h3>
+                                Analisar uma imagem
+                            </h3>
+
+                            <p>
+                                Selecione qualquer fachada do
+                                computador para realizar uma
+                                análise independente.
+                            </p>
+
+
+                            <input
+                                type="file"
+                                id="input-imagem-individual"
+                                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                hidden
+                            >
+
+
+                            <button
+                                type="button"
+                                id="btn-selecionar-imagem"
+                                class="btn-selecionar-imagem"
+                            >
+                                Selecionar imagem
+                            </button>
+
+
+                            <div class="individual-info">
+
+                                <span>
+                                    JPG, JPEG, PNG ou WEBP
+                                </span>
+
+                                <small>
+                                    A imagem não será adicionada
+                                    automaticamente ao lote
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 ANÁLISE INDIVIDUAL
+            =================================== -->
+
+            <section
+                id="painel-individual"
+                class="painel painel-individual"
+                hidden
+            >
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            IMAGEM SELECIONADA
+                        </span>
+
+                        <h2>
+                            Análise individual
+                        </h2>
+
+                        <p>
+                            Confira a imagem antes de enviá-la
+                            para classificação.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btn-remover-imagem"
+                        class="btn-remover-imagem"
+                    >
+                        × Remover
+                    </button>
+
+                </div>
+
+
+                <div class="individual-grid">
+
+
+                    <!-- PREVIEW -->
+
+                    <div class="preview-container">
+
+                        <div class="preview-imagem">
+
+                            <img
+                                id="preview-imagem"
+                                src=""
+                                alt="Pré-visualização da fachada"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INFORMAÇÕES -->
+
+                    <div class="arquivo-detalhes">
+
+                        <span class="arquivo-label">
+                            ARQUIVO
+                        </span>
+
+                        <strong id="nome-arquivo">
+                            -
+                        </strong>
+
+
+                        <div class="arquivo-info-grid">
+
+                            <div>
+
+                                <span>
+                                    Tipo
+                                </span>
+
+                                <strong id="tipo-arquivo">
+                                    -
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Tamanho
+                                </span>
+
+                                <strong id="tamanho-arquivo">
+                                    -
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box individual-aviso">
+
+                            <div class="info-icone">
+                                i
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Análise independente
+                                </strong>
+
+                                <p>
+                                    Esta imagem será enviada
+                                    diretamente para a IA e não
+                                    será incluída automaticamente
+                                    no processamento em lote.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="btn-analisar-individual"
+                            class="btn-analisar-individual"
+                        >
+                            <span>
+                                ✦
+                            </span>
+
+                            Analisar esta fachada
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 PROCESSAMENTO INDIVIDUAL
+            =================================== -->
+
+            <section
+                id="processamento-individual"
+                class="painel processamento-individual"
+                hidden
+            >
+
+                <div class="processando-individual">
+
+                    <div class="spinner">
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Analisando fachada...
+                        </strong>
+
+                        <p>
+                            A Inteligência Artificial está
+                            avaliando a imagem selecionada.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 RESULTADO INDIVIDUAL
+            =================================== -->
+
+            <section
+                id="resultado-individual"
+                class="painel resultado-individual"
+                hidden
+            >
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            RESULTADO
+                        </span>
+
+                        <h2>
+                            Resultado da análise individual
+                        </h2>
+
+                        <p>
+                            Classificação produzida pela
+                            Inteligência Artificial.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="status-individual"
+                        class="status inconclusivo"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="resultado-individual-grid">
+
+
+                    <!-- CONFIANÇA -->
+
+                    <div class="resultado-individual-card">
+
+                        <span class="resultado-label">
+                            CONFIANÇA
+                        </span>
+
+                        <strong
+                            id="confianca-individual"
+                            class="confianca-numero"
+                        >
+                            0%
+                        </strong>
+
+
+                        <div class="barra">
+
+                            <div
+                                id="barra-confianca-individual"
+                                class="barra-preenchimento"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REVISÃO -->
+
+                    <div class="resultado-individual-card">
+
+                        <span class="resultado-label">
+                            REVISÃO HUMANA
+                        </span>
+
+                        <strong
+                            id="revisao-individual"
+                            class="revisao-individual-status"
+                        >
+                            -
+                        </strong>
+
+                        <small>
+                            Recomendação do modelo
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MOTIVO -->
+
+                <div class="resultado-bloco">
+
+                    <span class="resultado-label">
+                        MOTIVO PRINCIPAL
+                    </span>
+
+                    <p id="motivo-individual">
+                        -
+                    </p>
+
+                </div>
+
+
+                <!-- EVIDÊNCIAS -->
+
+                <div class="resultado-bloco">
+
+                    <span class="resultado-label">
+                        EVIDÊNCIAS IDENTIFICADAS
+                    </span>
+
+                    <ul id="evidencias-individual">
+                    </ul>
+
+                </div>
+
+
+                <div class="acoes-individual">
+
+                    <button
+                        type="button"
+                        id="btn-nova-analise"
+                        class="btn-nova-analise"
+                    >
+                        Analisar outra imagem
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 PROCESSAMENTO EM LOTE
+            =================================== -->
+
+            <section class="painel">
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            PROCESSAMENTO EM LOTE
+                        </span>
+
+                        <h2>
+                            Acompanhamento
+                        </h2>
+
+                        <p>
+                            Acompanhe o processamento das
+                            fachadas disponíveis em
+                            <strong>data/imagens</strong>.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="status-imagens"
+                        class="status-badge concluido"
+                    >
+                        PRONTO
+                    </div>
+
+                </div>
+
+
+                <!-- PROGRESSO -->
+
+                <div class="progresso-area">
+
+                    <div class="progresso-header">
+
+                        <span>
+                            Progresso
+                        </span>
+
+                        <strong id="progresso-percentual">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="barra-progresso">
+
+                        <div
+                            id="barra-preenchimento"
+                            class="barra-preenchimento"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="progresso-texto"
+                        class="progresso-detalhe"
+                    >
+                        Nenhuma análise iniciada
+                    </div>
+
+                </div>
+
+
+                <!-- MÉTRICAS -->
+
+                <div class="secao-titulo">
+                    PROCESSAMENTO
+                </div>
+
+
+                <div class="metricas">
+
+                    <div class="metrica">
+
+                        <span class="metrica-label">
+                            IMAGENS
+                        </span>
+
+                        <strong id="total">
+                            0
+                        </strong>
+
+                        <small>
+                            encontradas
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica sucesso">
+
+                        <span class="metrica-label">
+                            ANALISADAS
+                        </span>
+
+                        <strong id="analisadas">
+                            0
+                        </strong>
+
+                        <small>
+                            novas análises
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica ignorado">
+
+                        <span class="metrica-label">
+                            JÁ PROCESSADAS
+                        </span>
+
+                        <strong id="ignoradas">
+                            0
+                        </strong>
+
+                        <small>
+                            ignoradas
+                        </small>
+
+                    </div>
+
+
+                    <div class="metrica erro">
+
+                        <span class="metrica-label">
+                            ERROS
+                        </span>
+
+                        <strong id="erros">
+                            0
+                        </strong>
+
+                        <small>
+                            falhas
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CLASSIFICAÇÕES -->
+
+                <div class="secao-titulo classificacoes-titulo">
+                    CLASSIFICAÇÕES
+                </div>
+
+
+                <div class="classificacoes">
+
+                    <div class="classificacao-card ativo">
+
+                        <div class="classificacao-topo">
+
+                            <span class="classificacao-indicador">
+                            </span>
+
+                            ATIVOS
+
+                        </div>
+
+                        <strong id="ativos">
+                            0
+                        </strong>
+
+                        <small>
+                            sinais de atividade
+                        </small>
+
+                    </div>
+
+
+                    <div class="classificacao-card inativo">
+
+                        <div class="classificacao-topo">
+
+                            <span class="classificacao-indicador">
+                            </span>
+
+                            POSS. INATIVOS
+
+                        </div>
+
+                        <strong id="possivelmente-inativos">
+                            0
+                        </strong>
+
+                        <small>
+                            indícios de inatividade
+                        </small>
+
+                    </div>
+
+
+                    <div class="classificacao-card inconclusivo">
+
+                        <div class="classificacao-topo">
+
+                            <span class="classificacao-indicador">
+                            </span>
+
+                            INCONCLUSIVOS
+
+                        </div>
+
+                        <strong id="inconclusivos">
+                            0
+                        </strong>
+
+                        <small>
+                            evidência insuficiente
+                        </small>
+
+                    </div>
+
+
+                    <div class="classificacao-card revisao">
+
+                        <div class="classificacao-topo">
+
+                            <span class="classificacao-indicador">
+                            </span>
+
+                            REVISÃO
+
+                        </div>
+
+                        <strong id="revisoes">
+                            0
+                        </strong>
+
+                        <small>
+                            revisão recomendada
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ÚLTIMA ANÁLISE -->
+
+                <div
+                    id="ultima-analise"
+                    class="ultima-analise"
+                    hidden
+                >
+
+                    <div class="ultima-analise-header">
+                        Última análise
+                    </div>
+
+
+                    <div class="ultima-analise-grid">
+
+                        <div>
+
+                            <span>
+                                Instalação
+                            </span>
+
+                            <strong id="ultima-instalacao">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Classificação
+                            </span>
+
+                            <strong id="ultimo-status">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Confiança
+                            </span>
+
+                            <strong id="ultima-confianca">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOG -->
+
+                <div class="log-area">
+
+                    <div class="log-header">
+
+                        <span>
+                            Atividade
+                        </span>
+
+                        <span
+                            id="indicador-execucao"
+                            class="indicador-execucao"
+                        >
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="log"
+                        class="log"
+                    >
+
+                        <div class="log-vazio">
+                            O histórico da execução
+                            aparecerá aqui.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div
+                    id="status-badge"
+                    class="status-badge aguardando status-execucao"
+                >
+                    AGUARDANDO
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 RESULTADO FINAL DO LOTE
+            =================================== -->
+
+            <section
+                id="resultado-final"
+                class="painel resultado-final"
+                hidden
+            >
+
+                <div class="resultado-icone">
+                    ✓
+                </div>
+
+
+                <div class="resultado-conteudo">
+
+                    <h2>
+                        Análise finalizada
+                    </h2>
+
+                    <p id="resultado-mensagem">
+                        Processamento concluído.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/resultados"
+                    class="btn-resultados"
+                >
+                    Ver resultados →
+                </a>
+
+            </section>
+
+        </main>
+
+
+        <!-- ======================================
+             FOOTER
+        ======================================= -->
+
+        <footer class="footer">
+
+            <div>
+
+                <strong>
+                    Análise de Estabelecimentos
+                </strong>
+
+                <span>
+                    Sistema inteligente de apoio
+                    à classificação de fachadas
+                </span>
+
+            </div>
+
+
+            <div class="desenvolvedor">
+
+                Developed by
+
+                <strong>
+                    Fernando Ferreira & Sidnei Diaz
+                </strong>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <script
+        src="/static/js/analise.js"
+    ></script>
+
+</body>
+
+</html>

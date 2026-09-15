@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Resultados | Análise de Estabelecimentos
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/css/resultados.css"
+    >
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ======================================
+             HEADER
+        ======================================= -->
+
+        <header class="topbar">
+
+    <div class="marca-sistema">
+
+        <!-- VOLTAR -->
+
+        <a
+            href="/"
+            class="voltar"
+        >
+            ← Início
+        </a>
+
+
+        <!-- LOGO ENEL -->
+
+        <div class="logo-enel-container">
+
+            <img
+                src="/static/img/logo.png"
+                alt="Enel Brasil"
+                class="logo-enel"
+            >
+
+        </div>
+
+
+        <!-- TÍTULO -->
+
+        <div class="topbar-titulo">
+
+            <h1>
+                Resultados da Análise
+            </h1>
+
+            <p>
+                Visualização e revisão das classificações
+                realizadas pela Inteligência Artificial
+            </p>
+
+        </div>
+
+    </div>
+
+</header>
+
+        <!-- ======================================
+             CONTEÚDO
+        ======================================= -->
+
+        <main class="conteudo">
+
+
+            <!-- ==================================
+                 RESUMO
+            =================================== -->
+
+            <section class="painel resumo-painel">
+
+                <div class="painel-header">
+
+                    <div>
+
+                        <span class="etapa">
+                            VISÃO GERAL
+                        </span>
+
+                        <h2>
+                            Resumo das classificações
+                        </h2>
+
+                        <p>
+                            Indicadores consolidados dos resultados
+                            registrados pelo sistema.
+                        </p>
+
+                    </div>
+
+                    <div
+                        id="status-carregamento"
+                        class="status-badge carregando"
+                    >
+                        CARREGANDO
+                    </div>
+
+                </div>
+
+
+                <div class="metricas">
+
+                    <!-- TOTAL -->
+
+                    <div class="metrica total">
+
+                        <span class="metrica-label">
+                            TOTAL
+                        </span>
+
+                        <strong id="total-resultados">
+                            0
+                        </strong>
+
+                        <small>
+                            análises registradas
+                        </small>
+
+                    </div>
+
+
+                    <!-- ATIVOS -->
+
+                    <div class="metrica ativo">
+
+                        <span class="metrica-label">
+                            ATIVOS
+                        </span>
+
+                        <strong id="total-ativos">
+                            0
+                        </strong>
+
+                        <small>
+                            sinais de atividade
+                        </small>
+
+                    </div>
+
+
+                    <!-- POSSIVELMENTE INATIVOS -->
+
+                    <div class="metrica inativo">
+
+                        <span class="metrica-label">
+                            POSS. INATIVOS
+                        </span>
+
+                        <strong id="total-inativos">
+                            0
+                        </strong>
+
+                        <small>
+                            indícios de inatividade
+                        </small>
+
+                    </div>
+
+
+                    <!-- INCONCLUSIVOS -->
+
+                    <div class="metrica inconclusivo">
+
+                        <span class="metrica-label">
+                            INCONCLUSIVOS
+                        </span>
+
+                        <strong id="total-inconclusivos">
+                            0
+                        </strong>
+
+                        <small>
+                            sem evidência suficiente
+                        </small>
+
+                    </div>
+
+
+                    <!-- REVISÃO -->
+
+                    <div class="metrica revisao">
+
+                        <span class="metrica-label">
+                            REVISÃO
+                        </span>
+
+                        <strong id="total-revisoes">
+                            0
+                        </strong>
+
+                        <small>
+                            revisão recomendada
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 BUSCA E FILTROS
+            =================================== -->
+
+            <section class="painel filtros-painel">
+
+                <div class="filtros-topo">
+
+                    <div class="busca">
+
+                        <span class="busca-icone">
+                            ⌕
+                        </span>
+
+                        <input
+                            type="text"
+                            id="campo-busca"
+                            placeholder="Buscar por instalação..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="btn-limpar-busca"
+                            class="btn-limpar-busca"
+                            title="Limpar busca"
+                            hidden
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div class="contador-filtro">
+
+                        <strong id="total-filtrado">
+                            0
+                        </strong>
+
+                        <span>
+                            resultado(s)
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="filtros">
+
+                    <button
+                        type="button"
+                        class="filtro ativo"
+                        data-filtro="TODOS"
+                    >
+                        Todos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filtro"
+                        data-filtro="ATIVO"
+                    >
+                        Ativos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filtro"
+                        data-filtro="POSSIVELMENTE_INATIVO"
+                    >
+                        Possivelmente inativos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filtro"
+                        data-filtro="INCONCLUSIVO"
+                    >
+                        Inconclusivos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filtro"
+                        data-filtro="REVISAO"
+                    >
+                        Somente revisão
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 SEM RESULTADOS
+            =================================== -->
+
+            <section
+                id="sem-resultados"
+                class="painel sem-resultados"
+                hidden
+            >
+
+                <div class="sem-resultados-icone">
+                    ⌕
+                </div>
+
+                <h2>
+                    Nenhum resultado encontrado
+                </h2>
+
+                <p>
+                    Não existem registros correspondentes
+                    à busca ou ao filtro selecionado.
+                </p>
+
+            </section>
+
+
+            <!-- ==================================
+                 VISUALIZAÇÃO DO RESULTADO
+            =================================== -->
+
+            <section
+                id="visualizador"
+                class="resultado-grid"
+                hidden
+            >
+
+
+                <!-- ==================================
+                     IMAGEM
+                =================================== -->
+
+                <div class="painel painel-imagem">
+
+                    <div class="painel-titulo">
+
+                        <span>
+                            Fachada
+                        </span>
+
+                        <span
+                            id="data-imagem-badge"
+                            class="data-badge"
+                        >
+                            -
+                        </span>
+
+                    </div>
+
+
+                    <div class="imagem-wrapper">
+
+                        <img
+                            id="imagem-fachada"
+                            src=""
+                            alt="Imagem da fachada analisada"
+                        >
+
+                        <div
+                            id="imagem-indisponivel"
+                            class="imagem-indisponivel"
+                            hidden
+                        >
+
+                            <span>
+                                Imagem não disponível
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================
+                     RESULTADO
+                =================================== -->
+
+                <div class="painel painel-resultado">
+
+                    <!-- INSTALAÇÃO -->
+
+                    <div class="resultado-header">
+
+                        <div>
+
+                            <span class="resultado-label">
+                                INSTALAÇÃO
+                            </span>
+
+                            <h2 id="id-instalacao">
+                                -
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            id="status"
+                            class="status inconclusivo"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <!-- DADOS -->
+
+                    <div class="info-grid">
+
+                        <div class="info">
+
+                            <span>
+                                Data da imagem
+                            </span>
+
+                            <strong id="data-imagem">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <span>
+                                Data da análise
+                            </span>
+
+                            <strong id="data-analise">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONFIANÇA -->
+
+                    <div class="confianca-area">
+
+                        <div class="confianca-header">
+
+                            <span>
+                                Confiança da classificação
+                            </span>
+
+                            <strong id="confianca">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="barra">
+
+                            <div
+                                id="barra-confianca"
+                                class="barra-preenchimento"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MOTIVO -->
+
+                    <div class="bloco">
+
+                        <span class="resultado-label">
+                            MOTIVO PRINCIPAL
+                        </span>
+
+                        <p id="motivo">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <!-- EVIDÊNCIAS -->
+
+                    <div class="bloco">
+
+                        <span class="resultado-label">
+                            EVIDÊNCIAS IDENTIFICADAS
+                        </span>
+
+                        <ul id="evidencias">
+                        </ul>
+
+                    </div>
+
+
+                    <!-- REVISÃO -->
+
+                    <div
+                        id="revisao"
+                        class="revisao"
+                        hidden
+                    >
+
+                        <div class="revisao-icone">
+                            !
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Revisão recomendada
+                            </strong>
+
+                            <p>
+                                A Inteligência Artificial recomenda
+                                revisão humana para este registro.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OBSERVAÇÃO -->
+
+                    <div
+                        id="bloco-observacao"
+                        class="bloco observacao"
+                        hidden
+                    >
+
+                        <span class="resultado-label">
+                            OBSERVAÇÃO DO ANALISTA
+                        </span>
+
+                        <p id="observacao-analista">
+                            -
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 NAVEGAÇÃO
+            =================================== -->
+
+            <section
+                id="navegacao-resultados"
+                class="navegacao"
+                hidden
+            >
+
+                <button
+                    type="button"
+                    id="btn-anterior"
+                    class="btn-navegacao secundario"
+                >
+                    ← Anterior
+                </button>
+
+
+                <div class="posicao">
+
+                    <strong id="posicao-atual">
+                        0
+                    </strong>
+
+                    <span>
+                        de
+                    </span>
+
+                    <strong id="total-navegacao">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btn-proximo"
+                    class="btn-navegacao primario"
+                >
+                    Próximo →
+                </button>
+
+            </section>
+
+        </main>
+
+
+        <!-- ======================================
+             FOOTER
+        ======================================= -->
+
+        <footer class="footer">
+
+            <div>
+
+                <strong>
+                    Análise de Estabelecimentos
+                </strong>
+
+                <span>
+                    Sistema inteligente de apoio
+                    à classificação de fachadas
+                </span>
+
+            </div>
+
+
+            <div class="desenvolvedor">
+
+                Developed by
+
+                <strong>
+                    Fernando Ferreira & Sidnei Diaz
+                </strong>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <script
+        src="/static/js/resultados.js"
+    ></script>
+
+</body>
+
+</html>

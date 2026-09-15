@@ -8,8 +8,7 @@ from app.services.google_streetview_provider import (
 )
 
 
-ARQUIVO_BASE = Path("base_normalizada_viacep.xlsx")
-
+ARQUIVO_BASE = Path("base_normalizada.xlsx")
 PASTA_IMAGENS = Path("data/imagens")
 
 ARQUIVO_COLETA = Path(
