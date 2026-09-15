@@ -1304,3 +1304,245 @@ input {
 
     font-size: 10px;
 }
+/* ==========================================
+   FILTRO DE PERÍODO
+========================================== */
+
+.filtro-periodo {
+    margin-top: 18px;
+
+    padding-top: 18px;
+
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    border-top: 1px solid #f3f4f6;
+}
+
+
+.campo-periodo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.campo-periodo label {
+    color: #6b7280;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+.campo-periodo input {
+    height: 38px;
+
+    padding: 0 11px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #374151;
+
+    outline: none;
+
+    font-size: 12px;
+}
+
+
+.campo-periodo input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.08);
+}
+
+
+.periodo-separador {
+    padding-bottom: 11px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+}
+
+
+.btn-periodo {
+    height: 38px;
+
+    padding: 0 15px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.btn-periodo:hover {
+    background: #1d4ed8;
+}
+
+
+.btn-periodo.secundario {
+    border: 1px solid #e5e7eb;
+
+    background: #ffffff;
+    color: #6b7280;
+}
+
+
+.btn-periodo.secundario:hover {
+    background: #f9fafb;
+    color: #374151;
+}
+
+
+@media (max-width: 650px) {
+
+    .filtro-periodo {
+        align-items: stretch;
+    }
+
+
+    .campo-periodo {
+        width: 100%;
+    }
+
+
+    .campo-periodo input {
+        width: 100%;
+    }
+
+
+    .periodo-separador {
+        display: none;
+    }
+
+
+    .btn-periodo {
+        flex: 1;
+    }
+}
+.campo-periodo input[type="time"] {
+    min-width: 120px;
+}
+/* ==========================================
+   SELETOR DE HORÁRIO
+========================================== */
+
+.input-hora {
+    position: relative;
+
+    width: 135px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.input-hora:focus-within {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.08);
+}
+
+
+/* ÍCONE */
+
+.icone-relogio {
+    position: absolute;
+
+    left: 11px;
+
+    color: #9ca3af;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
+
+/* INPUT */
+
+.input-hora input {
+    width: 100%;
+    height: 100%;
+
+    padding:
+        0
+        10px
+        0
+        35px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #374151;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* Remove borda herdada do campo-periodo */
+
+.campo-periodo .input-hora input {
+    border: none;
+    box-shadow: none;
+}
+
+
+/* ÍCONE NATIVO DO CHROME */
+
+.input-hora
+input[type="time"]
+::-webkit-calendar-picker-indicator {
+
+    opacity: 0.45;
+
+    cursor: pointer;
+
+    transition: opacity 0.2s;
+}
+
+
+.input-hora
+input[type="time"]
+::-webkit-calendar-picker-indicator:hover {
+
+    opacity: 1;
+}

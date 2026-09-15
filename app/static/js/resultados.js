@@ -57,6 +57,34 @@ const totalFiltrado =
     document.getElementById(
         "total-filtrado"
     );
+const dataInicial =
+    document.getElementById(
+        "data-inicial"
+    );
+
+const dataFinal =
+    document.getElementById(
+        "data-final"
+    );
+const horaInicial =
+    document.getElementById(
+        "hora-inicial"
+    );
+
+const horaFinal =
+    document.getElementById(
+        "hora-final"
+    );
+
+const btnHoje =
+    document.getElementById(
+        "btn-hoje"
+    );
+
+const btnLimparPeriodo =
+    document.getElementById(
+        "btn-limpar-periodo"
+    );
 
 const botoesFiltro =
     document.querySelectorAll(
@@ -316,20 +344,24 @@ function formatarStatus(
 // RESUMO
 // ==========================================
 
-function atualizarResumo() {
+function atualizarResumo(
+    lista = resultados
+) {
 
     let ativos = 0;
     let inativos = 0;
     let inconclusivos = 0;
     let revisoes = 0;
 
-    resultados.forEach(
+
+    lista.forEach(
         resultado => {
 
             const status =
                 normalizarStatus(
                     resultado.status
                 );
+
 
             if (
                 status === "ATIVO"
@@ -349,6 +381,7 @@ function atualizarResumo() {
                 inconclusivos++;
             }
 
+
             if (
                 resultado.requer_revisao
             ) {
@@ -358,8 +391,9 @@ function atualizarResumo() {
         }
     );
 
+
     totalResultados.textContent =
-        resultados.length;
+        lista.length;
 
     totalAtivos.textContent =
         ativos;
@@ -378,6 +412,156 @@ function atualizarResumo() {
 // ==========================================
 // FILTRAGEM
 // ==========================================
+function obterDataAnalise(
+    resultado
+) {
+
+    if (!resultado.data_analise) {
+        return null;
+    }
+
+    const texto =
+        String(
+            resultado.data_analise
+        ).trim();
+
+    /*
+     * Backend:
+     * 2026-09-15T14:25:32
+     *
+     * Queremos:
+     * 2026-09-15
+     */
+
+    const data =
+        texto.slice(
+            0,
+            10
+        );
+
+    if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(
+            data
+        )
+    ) {
+        return null;
+    }
+
+    return data;
+}
+function obterDataHoraAnalise(
+    resultado
+) {
+
+    if (!resultado.data_analise) {
+        return null;
+    }
+
+    const texto =
+        String(
+            resultado.data_analise
+        ).trim();
+
+    /*
+     * Exemplo recebido:
+     *
+     * 2026-09-15T18:10:32
+     */
+
+    if (
+        !texto.includes("T")
+    ) {
+        return null;
+    }
+
+    return texto;
+}
+function correspondePeriodo(
+    resultado
+) {
+
+    const inicioData =
+        dataInicial.value;
+
+    const inicioHora =
+        horaInicial.value;
+
+    const fimData =
+        dataFinal.value;
+
+    const fimHora =
+        horaFinal.value;
+
+
+    // Nenhum filtro selecionado
+
+    if (
+        !inicioData &&
+        !inicioHora &&
+        !fimData &&
+        !fimHora
+    ) {
+        return true;
+    }
+
+
+    const dataHoraResultado =
+        obterDataHoraAnalise(
+            resultado
+        );
+
+
+    if (!dataHoraResultado) {
+        return false;
+    }
+
+
+    // ======================================
+    // LIMITE INICIAL
+    // ======================================
+
+    if (inicioData) {
+
+        const hora =
+            inicioHora || "00:00";
+
+        const limiteInicial =
+            `${inicioData}T${hora}:00`;
+
+
+        if (
+            dataHoraResultado <
+            limiteInicial
+        ) {
+            return false;
+        }
+    }
+
+
+    // ======================================
+    // LIMITE FINAL
+    // ======================================
+
+    if (fimData) {
+
+        const hora =
+            fimHora || "23:59";
+
+        const limiteFinal =
+            `${fimData}T${hora}:59`;
+
+
+        if (
+            dataHoraResultado >
+            limiteFinal
+        ) {
+            return false;
+        }
+    }
+
+
+    return true;
+}
 
 function aplicarFiltros() {
 
@@ -386,13 +570,46 @@ function aplicarFiltros() {
             .trim()
             .toLowerCase();
 
-    resultadosFiltrados =
+
+    /*
+     * PRIMEIRO:
+     * filtra somente pelo período.
+     *
+     * Essa lista alimentará também
+     * os cards de métricas.
+     */
+
+    const resultadosPeriodo =
         resultados.filter(
+            resultado =>
+                correspondePeriodo(
+                    resultado
+                )
+        );
+
+
+    /*
+     * Cards representam o período
+     * selecionado.
+     */
+
+    atualizarResumo(
+        resultadosPeriodo
+    );
+
+
+    /*
+     * DEPOIS:
+     * aplica busca + status.
+     */
+
+    resultadosFiltrados =
+        resultadosPeriodo.filter(
             resultado => {
 
-                // --------------------------
+                // ==========================
                 // BUSCA
-                // --------------------------
+                // ==========================
 
                 const instalacao =
                     String(
@@ -401,19 +618,23 @@ function aplicarFiltros() {
                     )
                         .toLowerCase();
 
+
                 const correspondeBusca =
                     !busca
-                    || instalacao.includes(
+                    ||
+                    instalacao.includes(
                         busca
                     );
+
 
                 if (!correspondeBusca) {
                     return false;
                 }
 
-                // --------------------------
-                // FILTRO
-                // --------------------------
+
+                // ==========================
+                // STATUS
+                // ==========================
 
                 if (
                     filtroAtual ===
@@ -422,6 +643,7 @@ function aplicarFiltros() {
 
                     return true;
                 }
+
 
                 if (
                     filtroAtual ===
@@ -434,6 +656,7 @@ function aplicarFiltros() {
                     );
                 }
 
+
                 return (
                     normalizarStatus(
                         resultado.status
@@ -443,11 +666,11 @@ function aplicarFiltros() {
             }
         );
 
+
     indiceAtual = 0;
 
     atualizarVisualizacao();
 }
-
 
 // ==========================================
 // VISUALIZAÇÃO
@@ -1145,6 +1368,83 @@ document.addEventListener(
     }
 );
 
+// ==========================================
+// FILTRO POR PERÍODO
+// ==========================================
+
+dataInicial.addEventListener(
+    "change",
+    aplicarFiltros
+);
+
+
+dataFinal.addEventListener(
+    "change",
+    aplicarFiltros
+);
+horaInicial.addEventListener(
+    "change",
+    aplicarFiltros
+);
+
+horaFinal.addEventListener(
+    "change",
+    aplicarFiltros
+);
+
+
+btnLimparPeriodo.addEventListener(
+    "click",
+    () => {
+
+        dataInicial.value = "";
+        dataFinal.value = "";
+        horaInicial.value = "";
+        horaFinal.value = "";
+
+        aplicarFiltros();
+    }
+);
+
+
+btnHoje.addEventListener(
+    "click",
+    () => {
+
+        const agora =
+            new Date();
+
+        const ano =
+            agora.getFullYear();
+
+        const mes =
+            String(
+                agora.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const dia =
+            String(
+                agora.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const hoje =
+            `${ano}-${mes}-${dia}`;
+
+        dataInicial.value =
+            hoje;
+
+        dataFinal.value =
+            hoje;
+
+        aplicarFiltros();
+    }
+);
 
 // ==========================================
 // INICIALIZAÇÃO
